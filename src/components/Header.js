@@ -11,6 +11,7 @@ import {
     Typography,
     ThemeProvider,
 } from "@material-ui/core";
+import { CryptoState } from "../context/CryptoContext";
 
 const Header = () => {
     const useStyle = makeStyles(() => ({
@@ -23,6 +24,7 @@ const Header = () => {
         },
     }));
 
+    const { currency, setCurrency } = CryptoState();
     const classes = useStyle();
 
     const history = useHistory();
@@ -49,6 +51,8 @@ const Header = () => {
                         <Select
                             variant="outlined"
                             style={{ width: 100, height: 40, marginRight: 15 }}
+                            value={currency}
+                            onChange={(e) => setCurrency(e.target.value)}
                         >
                             <MenuItem value={"USD"}>USD</MenuItem>
                             <MenuItem value={"Naira"}>Naira</MenuItem>
