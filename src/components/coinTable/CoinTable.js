@@ -6,15 +6,24 @@ import {
     createTheme,
     ThemeProvider,
     TextField,
+    TableContainer,
+    CircularProgress,
+    Table,
+    TableRow,
+    TableCell,
+    TableHead,
+    TableBody,
 } from "@material-ui/core";
+import { useHistory } from "react-router";
 
 import { CryptoState } from "../../context/CryptoContext";
 import { CoinList } from "../../api/api";
 
 const CoinTable = () => {
-    const [coin, setCoin] = useState([]);
+    const [coins, setCoins] = useState([]);
     const [loading, setLoading] = useState(false);
-
+    const [search, setSearch] = useState("");
+    const history = useHistory();
     const { currency } = CryptoState();
 
     const fetchCoins = async () => {
@@ -23,26 +32,37 @@ const CoinTable = () => {
             const response = await fetch(CoinList(currency));
             if (response.ok) {
                 const data = await response.json();
-                setCoin(data);
+                setCoins(data);
+                setLoading(false);
             }
         } catch (error) {
             console.log(error);
         }
     };
-    console.log(coin);
+    console.log(coins);
 
     useEffect(() => {
         fetchCoins();
     }, [currency]);
 
+    const handleSearch = () => {
+        return coins.filter(
+            (coin) =>
+                coin.name?.toLowerCase().includes(search) ||
+                coin.symbols?.toLowerCase().includes(search)
+        );
+    };
+
     const darkTheme = createTheme({
         palette: {
             primary: {
-                main: "fff",
+                main: "#fff",
             },
             type: "dark",
         },
     });
+    const useStyle = makeStyles(() => ({}));
+    const classes = useStyle();
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -54,10 +74,67 @@ const CoinTable = () => {
                     Current Crypto Prices By Market Cap
                 </Typography>
                 <TextField
-                    label="search for a Crypto currency..."
+                    label="search for a Crypto currency.."
                     variant="outlined"
-                    style={{ marginBottom: 20, width: "100" }}
+                    style={{ marginBottom: 20, width: "100%" }}
+                    onChange={(e) => setSearch(e.target.value)}
                 />
+                <TableContainer>
+                    {loading ? (
+                        <CircularProgress />
+                    ) : (
+                        <Table>
+                            <TableHead style={{ backgroundColor: "#EEBC1D" }}>
+                                <TableRow>
+                                    {[
+                                        "Coin",
+                                        "Price",
+                                        "24h Change",
+                                        "Market Cap",
+                                    ].map((head) => (
+                                        <TableCell
+                                            style={{
+                                                color: "black",
+                                                fontWeight: "700",
+                                                fontFamily: "Montserrat",
+                                            }}
+                                            key={head}
+                                            align={
+                                                head === "Coin" ? "" : "right"
+                                            }
+                                        >
+                                            {head}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {handleSearch().map((row) => {
+                                    const profit =
+                                        row.price_change_percentage_24h > 0;
+                                    return (
+                                        <TableRow
+                                            onClick={() =>
+                                                history.push(`/coins/${row.id}`)
+                                            }
+                                            className={classes.row}
+                                            key={row.name}
+                                        >
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                style={{
+                                                    display: "flex",
+                                                    gap: 15,
+                                                }}
+                                            ></TableCell>
+                                        </TableRow>
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
+                    )}
+                </TableContainer>
             </Container>
         </ThemeProvider>
     );
