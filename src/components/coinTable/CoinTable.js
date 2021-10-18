@@ -26,6 +26,7 @@ const CoinTable = () => {
     const [coins, setCoins] = useState([]);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
     const history = useHistory();
     const { currency, symbol } = CryptoState();
 
@@ -64,7 +65,16 @@ const CoinTable = () => {
             type: "dark",
         },
     });
-    const useStyle = makeStyles(() => ({}));
+    const useStyle = makeStyles(() => ({
+        row: {
+            backgroundColor: "#16171a",
+            cursor: "pointer",
+            "&:hover": {
+                backgroundColor: "#131111",
+            },
+            fontFamily: "Montserrat",
+        },
+    }));
     const classes = useStyle();
 
     return (
@@ -162,7 +172,7 @@ const CoinTable = () => {
                                                 </div>
                                             </TableCell>
                                             <TableCell align="right">
-                                                {symbol}
+                                                {symbol}{" "}
                                                 {numberWithCommas(
                                                     row?.current_price.toFixed(
                                                         2
@@ -184,6 +194,15 @@ const CoinTable = () => {
                                                     2
                                                 )}
                                                 %
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                {symbol}{" "}
+                                                {numberWithCommas(
+                                                    row?.market_cap
+                                                        .toString()
+                                                        .slice(0, 6)
+                                                )}
+                                                M
                                             </TableCell>
                                         </TableRow>
                                     );
