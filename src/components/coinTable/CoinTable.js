@@ -15,6 +15,7 @@ import {
     TableBody,
 } from "@material-ui/core";
 import { useHistory } from "react-router";
+import { Pagination } from "@material-ui/lab";
 
 import { CryptoState } from "../../context/CryptoContext";
 import { CoinList } from "../../api/api";
@@ -122,95 +123,114 @@ const CoinTable = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {handleSearch().map((row) => {
-                                    const profit =
-                                        row.price_change_percentage_24h > 0;
-                                    return (
-                                        <TableRow
-                                            onClick={() =>
-                                                history.push(`/coins/${row.id}`)
-                                            }
-                                            className={classes.row}
-                                            key={row.name}
-                                        >
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                style={{
-                                                    display: "flex",
-                                                    gap: 10,
-                                                }}
+                                {handleSearch()
+                                    .slice(
+                                        (page - 1) * 10,
+                                        (page - 1) * 10 + 10
+                                    )
+                                    .map((row) => {
+                                        const profit =
+                                            row.price_change_percentage_24h > 0;
+                                        return (
+                                            <TableRow
+                                                onClick={() =>
+                                                    history.push(
+                                                        `/coins/${row.id}`
+                                                    )
+                                                }
+                                                className={classes.row}
+                                                key={row.name}
                                             >
-                                                <img
-                                                    src={row?.image}
-                                                    alt={row.name}
-                                                    height="50"
-                                                    style={{ marginBottom: 10 }}
-                                                />
-                                                <div
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
                                                     style={{
                                                         display: "flex",
-                                                        flexDirection: "column",
+                                                        gap: 10,
                                                     }}
                                                 >
-                                                    <span
+                                                    <img
+                                                        src={row?.image}
+                                                        alt={row.name}
+                                                        height="50"
                                                         style={{
-                                                            textTransform:
-                                                                "uppercase",
-                                                            fontSize: 22,
+                                                            marginBottom: 10,
+                                                        }}
+                                                    />
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            flexDirection:
+                                                                "column",
                                                         }}
                                                     >
-                                                        {row.symbol}
-                                                    </span>
-                                                    <span
-                                                        style={{
-                                                            color: "darkgrey",
-                                                        }}
-                                                    >
-                                                        {row.name}
-                                                    </span>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                {symbol}{" "}
-                                                {numberWithCommas(
-                                                    row?.current_price.toFixed(
+                                                        <span
+                                                            style={{
+                                                                textTransform:
+                                                                    "uppercase",
+                                                                fontSize: 22,
+                                                            }}
+                                                        >
+                                                            {row.symbol}
+                                                        </span>
+                                                        <span
+                                                            style={{
+                                                                color: "darkgrey",
+                                                            }}
+                                                        >
+                                                            {row.name}
+                                                        </span>
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell align="right">
+                                                    {symbol}{" "}
+                                                    {numberWithCommas(
+                                                        row?.current_price.toFixed(
+                                                            2
+                                                        )
+                                                    )}
+                                                </TableCell>
+                                                <TableCell
+                                                    align="right"
+                                                    style={{
+                                                        color:
+                                                            profit > 0
+                                                                ? "rgba(14,203, 129)"
+                                                                : "red",
+                                                        fontWeight: 500,
+                                                    }}
+                                                >
+                                                    {profit && "+"}
+                                                    {row.price_change_percentage_24h.toFixed(
                                                         2
-                                                    )
-                                                )}
-                                            </TableCell>
-                                            <TableCell
-                                                align="right"
-                                                style={{
-                                                    color:
-                                                        profit > 0
-                                                            ? "rgba(14,203, 129)"
-                                                            : "red",
-                                                    fontWeight: 500,
-                                                }}
-                                            >
-                                                {profit && "+"}
-                                                {row.price_change_percentage_24h.toFixed(
-                                                    2
-                                                )}
-                                                %
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                {symbol}{" "}
-                                                {numberWithCommas(
-                                                    row?.market_cap
-                                                        .toString()
-                                                        .slice(0, 6)
-                                                )}
-                                                M
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
+                                                    )}
+                                                    %
+                                                </TableCell>
+                                                <TableCell align="right">
+                                                    {symbol}{" "}
+                                                    {numberWithCommas(
+                                                        row?.market_cap
+                                                            .toString()
+                                                            .slice(0, 6)
+                                                    )}
+                                                    M
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
                             </TableBody>
                         </Table>
                     )}
                 </TableContainer>
+                <Pagination
+                    style={{
+                        padding: 20,
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                    }}
+                    count={(handleSearch()?.length / 10).toFixed(0)}
+                />
             </Container>
         </ThemeProvider>
     );
