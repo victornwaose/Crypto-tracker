@@ -19,12 +19,15 @@ import { useHistory } from "react-router";
 import { CryptoState } from "../../context/CryptoContext";
 import { CoinList } from "../../api/api";
 
+export function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 const CoinTable = () => {
     const [coins, setCoins] = useState([]);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState("");
     const history = useHistory();
-    const { currency } = CryptoState();
+    const { currency, symbol } = CryptoState();
 
     const fetchCoins = async () => {
         try {
@@ -125,9 +128,63 @@ const CoinTable = () => {
                                                 scope="row"
                                                 style={{
                                                     display: "flex",
-                                                    gap: 15,
+                                                    gap: 10,
                                                 }}
-                                            ></TableCell>
+                                            >
+                                                <img
+                                                    src={row?.image}
+                                                    alt={row.name}
+                                                    height="50"
+                                                    style={{ marginBottom: 10 }}
+                                                />
+                                                <div
+                                                    style={{
+                                                        display: "flex",
+                                                        flexDirection: "column",
+                                                    }}
+                                                >
+                                                    <span
+                                                        style={{
+                                                            textTransform:
+                                                                "uppercase",
+                                                            fontSize: 22,
+                                                        }}
+                                                    >
+                                                        {row.symbol}
+                                                    </span>
+                                                    <span
+                                                        style={{
+                                                            color: "darkgrey",
+                                                        }}
+                                                    >
+                                                        {row.name}
+                                                    </span>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                {symbol}
+                                                {numberWithCommas(
+                                                    row?.current_price.toFixed(
+                                                        2
+                                                    )
+                                                )}
+                                            </TableCell>
+                                            <TableCell
+                                                align="right"
+                                                style={{
+                                                    color:
+                                                        profit > 0
+                                                            ? "rgba(14,203, 129)"
+                                                            : "red",
+                                                    fontWeight: 500,
+                                                }}
+                                            >
+                                                {profit && "+"}
+                                                {row.price_change_percentage_24h.toFixed(
+                                                    2
+                                                )}
+                                                %
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}

@@ -49,7 +49,7 @@ const Banner = () => {
                             fontFamily: "Montserrat",
                         }}
                     >
-                        Get all the 24/7 regarding your favorite Crypto
+                        Get all the 24/7 update regarding your favorite Crypto
                     </Typography>
                 </div>
                 <Carousel />
