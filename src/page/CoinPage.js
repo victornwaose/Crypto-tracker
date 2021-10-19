@@ -63,6 +63,23 @@ const CoinPage = () => {
             paddingTop: 0,
             textAlign: "center",
         },
+        marketData: {
+            alignSelf: "start",
+            padding: 25,
+            paddingTop: 10,
+            width: "100%",
+            [theme.breakpoints.down("md")]: {
+                display: "flex",
+                justifyContent: "space-around",
+            },
+            [theme.breakpoints.down("sm")]: {
+                flexDirection: "column",
+                alignItems: "center",
+            },
+            [theme.breakpoints.down("xs")]: {
+                alignItems: "start",
+            },
+        },
     }));
     const classes = useStyle();
 
@@ -80,7 +97,7 @@ const CoinPage = () => {
                 <Typography variant="h4" className={classes.heading}>
                     {coin?.name}
                 </Typography>
-                <Typography variant="subtitle" className={classes.description}>
+                <Typography variant="subtitle1" className={classes.description}>
                     {ReactHtmlParser(coin?.description?.en?.split(".")[0])}
                 </Typography>
                 <div className={classes.marketData}>
@@ -108,13 +125,15 @@ const CoinPage = () => {
                     >
                         {symbol} {""}
                         {numberWithCommas(
-                            coin?.market_data.current_price?.[currency?.toLowerCase()]
+                            coin?.market_data.current_price?.[
+                                currency?.toLowerCase()
+                            ]
                         )}
                     </Typography>
                 </span>
-                {/* <span style={{ display: "flex" }}>
+                <span style={{ display: "flex" }}>
                     <Typography variant="h5" className={classes.heading}>
-                        Current Price:
+                        Market Cap:
                     </Typography>
                     &nbsp; &nbsp;
                     <Typography
@@ -123,12 +142,15 @@ const CoinPage = () => {
                     >
                         {symbol} {""}
                         {numberWithCommas(
-                            coin?.market_data._market_cap?.[currency?.toLowerCase()]
+                            coin?.market_data.market_cap?.[
+                                currency?.toLowerCase()
+                            ]
                                 .toString()
                                 .slice(0, -6)
-                        )}
+                        )}{" "}
+                        M
                     </Typography>
-                </span>  */}
+                </span>
             </div>
 
             {/* chart */}
