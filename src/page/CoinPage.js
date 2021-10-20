@@ -30,6 +30,7 @@ const CoinPage = () => {
 
     useEffect(() => {
         fetchSingleCoins();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const useStyle = makeStyles((theme) => ({
         container: {
@@ -54,6 +55,7 @@ const CoinPage = () => {
             fontWeight: "bold",
             marginBottom: 20,
             fontFamily: "Montserrat",
+            paddingLeft: "25px",
         },
         description: {
             width: "100%",
