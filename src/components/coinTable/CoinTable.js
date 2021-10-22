@@ -23,6 +23,7 @@ import { CoinList } from "../../api/api";
 export function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
 const CoinTable = () => {
     const [coins, setCoins] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -54,8 +55,8 @@ const CoinTable = () => {
     const handleSearch = () => {
         return coins.filter(
             (coin) =>
-                coin.name.toLowerCase().includes(search) ||
-                coin.symbols.toLowerCase().includes(search)
+                coin?.name?.trim().toLowerCase().includes(search) ||
+                coin?.symbols?.trim().toLowerCase().includes(search)
         );
     };
 

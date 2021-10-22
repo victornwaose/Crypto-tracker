@@ -14,6 +14,7 @@ const CoinPage = () => {
     const { currency = "", symbol = "" } = CryptoState();
     console.log(symbol, currency, "currency,symbol");
     console.log(coin, "coin");
+
     const fetchSingleCoins = async () => {
         try {
             const response = await fetch(SingleCoin(id));

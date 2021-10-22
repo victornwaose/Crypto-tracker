@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import React from "react";
 
-const SelectButton = ({ children, selected, onClick }) => {
+const SelectButton = ({ children, selected, onClick, day }) => {
     const useStyles = makeStyles({
         selectbutton: {
             border: "1px solid gold",
@@ -22,7 +22,11 @@ const SelectButton = ({ children, selected, onClick }) => {
         },
     });
     const classes = useStyles();
-    return <span className={classes.selectbutton} onClick={onClick}></span>;
+    return (
+        <span className={classes.selectbutton} onClick={onClick}>
+            {day?.label}
+        </span>
+    );
 };
 
 export default SelectButton;

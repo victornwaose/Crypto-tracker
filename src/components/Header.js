@@ -25,6 +25,7 @@ const Header = () => {
     }));
 
     const { currency, setCurrency } = CryptoState();
+
     const classes = useStyle();
 
     const history = useHistory();
@@ -54,8 +55,8 @@ const Header = () => {
                             value={currency}
                             onChange={(e) => setCurrency(e.target.value)}
                         >
-                            <MenuItem value={"USD"}>USD</MenuItem>
-                            <MenuItem value={"Naira"}>Naira</MenuItem>
+                            <MenuItem value="USD">USD</MenuItem>
+                            <MenuItem value="NGN">Naira</MenuItem>
                         </Select>
                     </Toolbar>{" "}
                 </Container>

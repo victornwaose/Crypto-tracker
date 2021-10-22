@@ -60,6 +60,8 @@ const CoinInfo = ({ coin }) => {
         },
     }));
     const classes = useStyle();
+    console.log(chartDays);
+
     return (
         <ThemeProvider theme={darkTheme}>
             <div className={classes.container}>
@@ -115,9 +117,10 @@ const CoinInfo = ({ coin }) => {
                                 <SelectButton
                                     key={day.value}
                                     onClick={() => setDays(day.value)}
-                                    selected={day.value === days}
+                                    selected={day.value === day}
+                                    day={day}
                                 >
-                                    {day.label}
+                                    {day?.label}
                                 </SelectButton>
                             ))}
                         </div>
